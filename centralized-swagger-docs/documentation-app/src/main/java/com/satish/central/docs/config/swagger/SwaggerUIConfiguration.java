@@ -29,19 +29,15 @@ public class SwaggerUIConfiguration {
 	private ServiceDefinitionsContext definitionContext;
 	
 	@Bean
-	public RestTemplate configureTempalte(){
+	public RestTemplate createRestTemplate(){
 		return new RestTemplate();
 	}
-	
-    @Primary
+
     @Bean
     @Lazy
-    public SwaggerResourcesProvider swaggerResourcesProvider(InMemorySwaggerResourcesProvider defaultResourcesProvider, RestTemplate temp) {
-        return () -> {          
-            List<SwaggerResource> resources = new ArrayList<>(defaultResourcesProvider.get());
-            resources.clear();
-            resources.addAll(definitionContext.getSwaggerDefinitions());
-            return resources;
-        };
+    @Primary
+    public SwaggerResourcesProvider createSwaggerResourcesProvider() {
+        return () -> definitionContext.getSwaggerDefinitions();
     }
 }
+
